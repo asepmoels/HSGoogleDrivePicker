@@ -5,14 +5,15 @@ import Foundation
 import GoogleAPIClientForREST
 import GoogleSignIn
 
-
 open class HSGIDSignInHandler: NSObject, GIDSignInDelegate {
     
-    @objc public static let hsGIDSignInChangedNotification = NSNotification.Name("HSGIDSignInChangedNotification")
-    @objc public static let hsGIDSignInFailedNotification = NSNotification.Name("HSGIDSignInFailedNotification")
+    @objc static let hsGIDSignInChangedNotification = NSNotification.Name("HSGIDSignInChangedNotification")
+    @objc static let hsGIDSignInFailedNotification = NSNotification.Name("HSGIDSignInFailedNotification")
     
-    public static let sharedInstance = HSGIDSignInHandler()
-    public class var authoriser:GTMFetcherAuthorizationProtocol? {
+    static let sharedInstance = HSGIDSignInHandler()
+    
+    
+    class var authoriser:GTMFetcherAuthorizationProtocol? {
         return HSGIDSignInHandler.sharedInstance.authoriser
     }
     
@@ -24,7 +25,7 @@ open class HSGIDSignInHandler: NSObject, GIDSignInDelegate {
         return false
     }
     
-    private weak var viewController:UIViewController?
+    weak var viewController:UIViewController?
     class func signIn(from vc: UIViewController?) {
         
         let handler = self.sharedInstance
@@ -33,67 +34,46 @@ open class HSGIDSignInHandler: NSObject, GIDSignInDelegate {
         //in iOS 8, the sign-in is called with view_did_appear before the signIn_didSignIn is fired on a queue
         DispatchQueue.main.async(execute: {
             
-            guard let signIn = validSignInInstance() else {
-                return
-            }
-            
             if let vc = vc {
-                signIn.presentingViewController = vc
+                GIDSignIn.sharedInstance().presentingViewController = vc
             }
-            
-            //NB - if you get a crash here, this probably indicates problems with your GoogleService-Info.plist not having the correct permissions
-            //
-            signIn.signIn()
-
-            
+            GIDSignIn.sharedInstance().signIn()
         })
         
     }
     
     class func signOut() {
-        guard let signIn = validSignInInstance() else {
-            return
-        }
-        
-        signIn.disconnect()
-        signIn.signOut()
+        GIDSignIn.sharedInstance().disconnect()
+        GIDSignIn.sharedInstance().signOut()
     }
     
-    private class func validSignInInstance() -> GIDSignIn? {
+    var authoriser: GTMFetcherAuthorizationProtocol?
+    
+    override init() {
+        super.init()
         guard let signIn = GIDSignIn.sharedInstance() else {
             print("Unable to create sign in instance")
-            return nil
+            return
         }
         
         if signIn.clientID == nil {
             signIn.clientID = clientIDFromPlist
         }
         
-        if signIn.clientID == nil {
-            print("Unable to get signIn clientID")
-            return nil
-        }
-
-        return signIn
-    }
-    
-    private var authoriser: GTMFetcherAuthorizationProtocol?
-    private override init() {
-        super.init()
-        guard let signIn = HSGIDSignInHandler.validSignInInstance() else {
-            return
-        }
-  
         signIn.delegate = self
         
-        let currentScopes = signIn.scopes
-        let newScopes = (currentScopes ?? []) + [kGTLRAuthScopeDriveReadonly]
+        let currentScopes = GIDSignIn.sharedInstance().scopes
+        let newScopes = (currentScopes ?? []) + [kGTLRAuthScopeDrive]
         signIn.scopes = newScopes
         
         signIn.restorePreviousSignIn()
     }
     
-    private static var clientIDFromPlist:String {
+    
+    /// Either add GoogleService-Info.plist to your project
+    /// or manually initialise Google Signin by calling
+    /// GIDSignIn.sharedInstance().clientID = "YOUR_CLIENT_ID" in your AppDelegate
+    var clientIDFromPlist:String {
         let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
         if let dict = NSDictionary(contentsOfFile: path ?? "") as? [String:Any]? {
             let clientID = dict?["CLIENT_ID"] as? String

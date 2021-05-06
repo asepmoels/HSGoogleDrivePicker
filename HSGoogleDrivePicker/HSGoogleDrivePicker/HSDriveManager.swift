@@ -29,6 +29,8 @@ private let kKeychainItemName = "Drive API"
     open var autoFetchPages = false
     //* Default is 'Sign out'*
     open var signOutLabel:String = "Sign out"
+  
+  private var shareLinkCompletion: ((String?, Error?) -> Void)?
     
     private var service: GTLRDriveService?
     
@@ -108,4 +110,35 @@ private let kKeychainItemName = "Drive API"
     func updateAuthoriser() {
         service?.authorizer = HSGIDSignInHandler.authoriser
     }
+  
+  public func getShareableLink(file: GTLRDrive_File, completion: ((String?, Error?) -> Void)?) {
+    self.shareLinkCompletion = completion
+    
+    let permission = GTLRDrive_Permission()
+    permission.role = "reader"
+    permission.type = "anyone"
+
+    let q = GTLRDriveQuery_PermissionsCreate.query(withObject: permission, fileId: file.identifier ?? "")
+    service?.executeQuery(q) { [weak self] (_, _, error) in
+      if error == nil,
+         let fileId = file.identifier {
+        self?.generateWebLink(fileId: fileId)
+      } else {
+        self?.shareLinkCompletion?(nil, error)
+      }
+    }
+  }
+  
+  private func generateWebLink(fileId: String) {
+    let q = GTLRDriveQuery_FilesGet.query(withFileId: fileId)
+    q.fields = "webViewLink"
+    service?.executeQuery(q, completionHandler: { (t, a, e) in
+      if let file = a as? GTLRDrive_File,
+         let link = file.webViewLink {
+        self.shareLinkCompletion?(link, nil)
+      } else {
+        self.shareLinkCompletion?(nil, e)
+      }
+    })
+  }
 }
