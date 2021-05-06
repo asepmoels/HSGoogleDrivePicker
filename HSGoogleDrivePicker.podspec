@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "HSGoogleDrivePicker"
-  s.version      = "3.0.2"
+  s.version      = "3.0.4"
   s.summary      = "A sane and simple file picker for Google Drive."
 
   s.homepage     = "https://github.com/ConfusedVorlon/HSGoogleDrivePicker"
@@ -10,12 +10,12 @@ Pod::Spec.new do |s|
 
   s.license      = "MIT"
 
-  s.author             = { "Rob" => "Rob@HobbyistSoftware.com" }
+  s.author             = { "Asep Mulyana" => "asepmoels@gmail.com" }
 
   s.platform     = :ios, "11.0"
   s.swift_version = '5.0'
 
-  s.source       = { :git => "https://github.com/ConfusedVorlon/HSGoogleDrivePicker.git", :tag => s.version.to_s }
+  s.source       = { :git => "https://github.com/asepmoels/HSGoogleDrivePicker.git", :tag => s.version.to_s }
   s.source_files  = "HSGoogleDrivePicker/HSGoogleDrivePicker"
 
   s.requires_arc = true

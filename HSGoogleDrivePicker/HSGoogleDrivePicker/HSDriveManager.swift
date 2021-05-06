@@ -30,7 +30,7 @@ private let kKeychainItemName = "Drive API"
     //* Default is 'Sign out'*
     open var signOutLabel:String = "Sign out"
   
-  private var shareLinkCompletion: ((String?, Error?) -> Void)?
+  private var shareLinkCompletion: ((URL?, Error?) -> Void)?
     
     private var service: GTLRDriveService?
     
@@ -111,7 +111,7 @@ private let kKeychainItemName = "Drive API"
         service?.authorizer = HSGIDSignInHandler.authoriser
     }
   
-  public func getShareableLink(file: GTLRDrive_File, completion: ((String?, Error?) -> Void)?) {
+  public func getShareableLink(file: GTLRDrive_File, completion: ((URL?, Error?) -> Void)?) {
     self.shareLinkCompletion = completion
     
     let permission = GTLRDrive_Permission()
@@ -122,22 +122,23 @@ private let kKeychainItemName = "Drive API"
     service?.executeQuery(q) { [weak self] (_, _, error) in
       if error == nil,
          let fileId = file.identifier {
-        self?.generateWebLink(fileId: fileId)
+        self?.generateWebLink(file: file)
       } else {
         self?.shareLinkCompletion?(nil, error)
       }
     }
   }
   
-  private func generateWebLink(fileId: String) {
-    let q = GTLRDriveQuery_FilesGet.query(withFileId: fileId)
+  private func generateWebLink(file: GTLRDrive_File) {
+    let q = GTLRDriveQuery_FilesGet.query(withFileId: file.identifier ?? "")
     q.fields = "webViewLink"
-    service?.executeQuery(q, completionHandler: { (t, a, e) in
-      if let file = a as? GTLRDrive_File,
-         let link = file.webViewLink {
-        self.shareLinkCompletion?(link, nil)
+    service?.executeQuery(q, completionHandler: { (_, result, error) in
+      if let theFile = result as? GTLRDrive_File,
+         let link = theFile.webViewLink,
+         let url = URL(string: link + "&ori_filename=\(file.name ?? "some.file")") {
+        self.shareLinkCompletion?(url, nil)
       } else {
-        self.shareLinkCompletion?(nil, e)
+        self.shareLinkCompletion?(nil, error)
       }
     })
   }
