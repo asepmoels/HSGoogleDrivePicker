@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D433FFF4232900390091D0E8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D433FFF3232900390091D0E8 /* GoogleService-Info.plist */; };
 		D44EDE681F41CF35006E9179 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EDE671F41CF35006E9179 /* AppDelegate.swift */; };
 		D44EDE6B1F41CF35006E9179 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EDE6A1F41CF35006E9179 /* ViewController.swift */; };
 		D44EDE6E1F41CF35006E9179 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D44EDE6C1F41CF35006E9179 /* Main.storyboard */; };
@@ -19,7 +18,6 @@
 /* Begin PBXFileReference section */
 		38C0AE7EB58F855AF24FC39A /* Pods_HSGoogleDrivePicker_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HSGoogleDrivePicker_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0362764907BF2C5AD3E8308 /* Pods-HSGoogleDrivePicker-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HSGoogleDrivePicker-Demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-HSGoogleDrivePicker-Demo/Pods-HSGoogleDrivePicker-Demo.release.xcconfig"; sourceTree = "<group>"; };
-		D433FFF3232900390091D0E8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D44EDE601F41CF35006E9179 /* HSGoogleDrivePicker-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HSGoogleDrivePicker-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D44EDE671F41CF35006E9179 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D44EDE6A1F41CF35006E9179 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -94,7 +92,6 @@
 		D44EDE631F41CF35006E9179 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D433FFF3232900390091D0E8 /* GoogleService-Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -111,7 +108,6 @@
 				D44EDE5D1F41CF35006E9179 /* Frameworks */,
 				D44EDE5E1F41CF35006E9179 /* Resources */,
 				DE4352BAF9922594CCE1B237 /* [CP] Embed Pods Frameworks */,
-				699031A1C377206A2D144E3E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -163,7 +159,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D44EDE731F41CF35006E9179 /* LaunchScreen.storyboard in Resources */,
-				D433FFF4232900390091D0E8 /* GoogleService-Info.plist in Resources */,
 				D44EDE701F41CF35006E9179 /* Assets.xcassets in Resources */,
 				D44EDE6E1F41CF35006E9179 /* Main.storyboard in Resources */,
 			);
@@ -190,24 +185,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		699031A1C377206A2D144E3E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HSGoogleDrivePicker-Demo/Pods-HSGoogleDrivePicker-Demo-resources.sh",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HSGoogleDrivePicker-Demo/Pods-HSGoogleDrivePicker-Demo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DE4352BAF9922594CCE1B237 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -220,6 +197,7 @@
 				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleAPIClientForREST/GoogleAPIClientForREST.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleSignIn/GoogleSignIn.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -228,6 +206,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleAPIClientForREST.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleSignIn.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

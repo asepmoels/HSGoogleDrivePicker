@@ -6,7 +6,7 @@ target 'HSGoogleDrivePicker-Demo' do
   use_frameworks!
   
   # Pods for HSGoogleDrivePicker-Demo
-  pod 'HSGoogleDrivePicker', '~> 3.0’, :source => "https://code.nbs.co.id/nbsengineering/Specs.git"
+  pod 'HSGoogleDrivePicker', :path => '../'
   
   
 end
